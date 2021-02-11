@@ -1,6 +1,6 @@
 # inspection_app
 
-Inspection app for hackathon
+A new Flutter project.
 
 ## Getting Started
 

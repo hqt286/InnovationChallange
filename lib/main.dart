@@ -1,274 +1,123 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:inspection_app/ratingbar.dart';
-import 'package:inspection_app/commentpage.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+
+// amplify imports
+import 'amplifyconfiguration.dart';
+import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 void main() {
-  runApp(MaterialApp(
-    title: 'Inspection',
-    home: RatingBar(),
-  ));
+  runApp(MyApp());
 }
 
-
-class RatingBar extends StatefulWidget{
+// 1
+class MyApp extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => RatingBarState();
+  State<StatefulWidget> createState() => _MyAppState();
 }
 
-class RatingBarState extends State<RatingBar> {
+class _MyAppState extends State<MyApp> {
+  bool _amplifyConfigured = false;
+  String _uploadFileResult = '';
+  String _getUrlResult = '';
+  String _removeResult = '';
 
-  var sliderValue = 0.0;
-  Color feedBackColor = Colors.red;
-  var comment = "Enter Comment";
+  AmplifyStorageS3 storage = new AmplifyStorageS3();
 
-  void commentButtonPressed() {
-    setState(() {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage()));
-    });
+  @override
+  void initState() {
+    super.initState();
+    _configureAmplify();
   }
+
+  void _configureAmplify() async {
+    if (!mounted) return;
+
+    // Plugins
+    Amplify.addPlugin(AmplifyAuthCognito());
+    Amplify.addPlugin(AmplifyStorageS3());
+
+    // Once Plugins are added, configure Amplify
+    await Amplify.configure(amplifyconfig);
+    try {
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // void uploadFile() async {
+  //   // use a file selection mechanism of your choice
+  //   File file = await FilePicker.getFile(type: FileType.image);
+  //   final key = new DateTime.now().toString();
+  //   UploadFileResult result =
+  //       await Amplify.Storage.uploadFile(key: key, local: file);
+  // }
+
+  // void _upload() async {
+  //   try {
+  //     print('In upload');
+  //     File local = await FilePicker.getFile(type: FileType.image);
+  //     print('2');
+  //     final key = 'ExampleKey';
+  //     Map<String, String> metadata = <String, String>{};
+  //     metadata['name'] = 'WE DID IT FAM!';
+  //     metadata['desc'] = 'A successfully uploaded photo';
+  //     S3UploadFileOptions options = S3UploadFileOptions(
+  //         accessLevel: StorageAccessLevel.guest, metadata: metadata);
+  //     UploadFileResult result = await Amplify.Storage.uploadFile(
+  //         key: key, local: local, options: options);
+  //     setState(() {
+  //       _uploadFileResult = result.key;
+  //     });
+  //   } catch (e) {
+  //     print('UploadFile Err: ' + e.toString());
+  //   }
+  // }
+
+  // void getUrl() async {}
+
+  // void _download() async {}
+
   @override
   Widget build(BuildContext context) {
-
-    IconButton commentBox = IconButton(
-      iconSize: 100,
-      icon: Icon(
-          Icons.add_box_rounded,
-          color: Colors.grey),
-      onPressed: commentButtonPressed,
-    );
-
-
     return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text("Curb Appeal",
-            style: TextStyle(color: Color(0xffb74093).withOpacity(0.8), fontSize: 35),),
-            backgroundColor: Colors.transparent,
-            bottomOpacity: 0.0,
-            elevation: 0.0,
-
-          ),
-          body: Container (
-            child: Column(
-              children: [
-
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text("Comparison to Neighborhood; First Impression / Appearance",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
-                    textAlign: TextAlign.center,)
-                  ),
-                ),
-
-                //******************************************** Rating Bar Section **************************************************************
-                Container(
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child:Text(
-                            "Your Rating: $sliderValue",
-                            style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 15),
-                          ),
-                        ),
-
-                        Container(
-                          child: SliderTheme(
-                            data: SliderTheme.of(context).copyWith(
-                              activeTrackColor: Colors.red[700],
-                              inactiveTrackColor: Colors.red[100],
-                              trackShape: RoundedRectSliderTrackShape(),
-                              trackHeight: 4.0,
-                              thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                              thumbColor: Colors.redAccent,
-                              overlayColor: Colors.red.withAlpha(32),
-                              overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
-                              tickMarkShape: RoundSliderTickMarkShape(),
-                              activeTickMarkColor: Colors.red[700],
-                              inactiveTickMarkColor: Colors.red[100],
-                              valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-                              valueIndicatorColor: Colors.redAccent,
-                              valueIndicatorTextStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            child: Slider(
-                              min: 0.0,
-                              max: 5.0,
-                              divisions: 5,
-                              value: sliderValue,
-                              activeColor: feedBackColor,
-                              inactiveColor: Colors.lightBlue,
-                              label: "$sliderValue",
-                              onChanged: (newValue) {
-                                setState(() {
-                                  sliderValue = newValue;
-                                  print(Text("$sliderValue"));
-                                  if (sliderValue == 0.0) {
-                                    feedBackColor = Colors.green;
-                                  }
-                                  else if (sliderValue == 1.0) {
-                                    feedBackColor = Colors.black;
-                                  }
-                                  else if (sliderValue == 2.0) {
-                                    feedBackColor = Colors.yellow;
-                                  }
-                                  else if (sliderValue == 3.0) {
-                                    feedBackColor = Colors.blueGrey;
-                                  }
-                                  else if (sliderValue == 4.0) {
-                                    feedBackColor = Colors.blue;
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    )
-                ),
-
-
-
-                //******************************************** Trend Section **************************************************************
-                Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 20),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("Trend",
-                            style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 15),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Align(
-                          child: InkWell(
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 1,
-                                    )
-                                ),
-                                child: Container(
-                                  width: 350,
-                                  height: 50,
-                                  child: Text("___ 1 2 3 4"),
-                                )
-                            ),
-                            onTap: commentButtonPressed,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                //******************************************** Comment Section **************************************************************
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 20),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("Comment",
-                            style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 15),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Align(
-                          child: InkWell(
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 1,
-                                    )
-                                ),
-                                child: Container(
-                                  width: 350,
-                                  height: 50,
-                                  child: Text("___ 1 2 3 4"),
-                                )
-                            ),
-                            onTap: commentButtonPressed,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                //******************************************** Gallery Section **************************************************************
-
-                Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 20),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Photos",
-                              style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 15),
-                            ),
-                          ),
-                        ),
-
-
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.blue,
-                                ),
-                                onTap: () {},
-                              ),
-
-                              InkWell(
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.blue,
-                                ),
-                                onTap: () {},
-                              ),
-                              InkWell(
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.blue,
-                                ),
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
-                ),
-
-
-              ],
+        title: 'Mobile Inspection App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+            appBar: AppBar(
+              title: const Text('Amplify App'),
             ),
-          )
-      ),
-    );
+            //   body: ListView(padding: EdgeInsets.all(10.0), children: <Widget>[
+            //     Center(
+            //       child: Column(children: [
+            //         const Padding(padding: EdgeInsets.all(5.0)),
+            //         Text(_amplifyConfigured
+            //             ? "AWS Amplify configured!"
+            //             : "not configured"),
+            //         // const Padding(padding: EdgeInsets.all(5.0)),
+            //         // Text('hi'),
+            //       ]),
+            //     )
+            //   ]),
+            // ));
+            // body: TableLayout(),
+            // body: MyCustomForm(),
+            body: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  onPressed: () {},
+                  child: const Text('Upload File'),
+                ),
+              ],
+            ))));
   }
 }
