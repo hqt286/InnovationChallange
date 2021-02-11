@@ -50,38 +50,38 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  // void uploadFile() async {
-  //   // use a file selection mechanism of your choice
-  //   File file = await FilePicker.getFile(type: FileType.image);
-  //   final key = new DateTime.now().toString();
-  //   UploadFileResult result =
-  //       await Amplify.Storage.uploadFile(key: key, local: file);
-  // }
+  void uploadFile() async {
+    // use a file selection mechanism of your choice
+    File file = await FilePicker.getFile(type: FileType.image);
+    final key = new DateTime.now().toString();
+    UploadFileResult result =
+        await Amplify.Storage.uploadFile(key: key, local: file);
+  }
 
-  // void _upload() async {
-  //   try {
-  //     print('In upload');
-  //     File local = await FilePicker.getFile(type: FileType.image);
-  //     print('2');
-  //     final key = 'ExampleKey';
-  //     Map<String, String> metadata = <String, String>{};
-  //     metadata['name'] = 'WE DID IT FAM!';
-  //     metadata['desc'] = 'A successfully uploaded photo';
-  //     S3UploadFileOptions options = S3UploadFileOptions(
-  //         accessLevel: StorageAccessLevel.guest, metadata: metadata);
-  //     UploadFileResult result = await Amplify.Storage.uploadFile(
-  //         key: key, local: local, options: options);
-  //     setState(() {
-  //       _uploadFileResult = result.key;
-  //     });
-  //   } catch (e) {
-  //     print('UploadFile Err: ' + e.toString());
-  //   }
-  // }
+  void _upload() async {
+    try {
+      print('In upload');
+      File local = await FilePicker.getFile(type: FileType.image);
+      print('2');
+      final key = 'ExampleKey';
+      Map<String, String> metadata = <String, String>{};
+      metadata['name'] = 'WE DID IT FAM!';
+      metadata['desc'] = 'A successfully uploaded photo';
+      S3UploadFileOptions options = S3UploadFileOptions(
+          accessLevel: StorageAccessLevel.guest, metadata: metadata);
+      UploadFileResult result = await Amplify.Storage.uploadFile(
+          key: key, local: local, options: options);
+      setState(() {
+        _uploadFileResult = result.key;
+      });
+    } catch (e) {
+      print('UploadFile Err: ' + e.toString());
+    }
+  }
 
-  // void getUrl() async {}
+  void getUrl() async {}
 
-  // void _download() async {}
+  void _download() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class _MyAppState extends State<MyApp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: _upload,
                   child: const Text('Upload File'),
                 ),
               ],
