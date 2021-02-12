@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import './camera_flow.dart';
+// import './storage/stora;ge_service.dart';
 
 // amplify imports
 import 'amplifyconfiguration.dart';
@@ -23,8 +25,6 @@ class _MyAppState extends State<MyApp> {
   String _uploadFileResult = '';
   String _getUrlResult = '';
   String _removeResult = '';
-
-  AmplifyStorageS3 storage = new AmplifyStorageS3();
 
   @override
   void initState() {
@@ -50,38 +50,50 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void uploadFile() async {
-    // use a file selection mechanism of your choice
-    File file = await FilePicker.getFile(type: FileType.image);
-    final key = new DateTime.now().toString();
-    UploadFileResult result =
-        await Amplify.Storage.uploadFile(key: key, local: file);
-  }
+  // void _upload() async {
+  //   try {
+  //     print('In upload');
+  //     // File local = await FilePicker.getFile(type: FileType.any);
+  //     FilePickerResult result = await FilePicker.platform
+  //         .pickFiles(type: FileType.custom, allowedExtensions: ['jpg']);
+  //     if (result != null) {
+  //       File local = File(result.files.first.path);
+  //       // final key = 'ExampleKey';
+  //       final key = new DateTime.now().toString();
+  //       Map<String, String> metadata = <String, String>{};
+  //       metadata['name'] = 'WE DID IT FAM!';
+  //       metadata['desc'] = 'A successfully uploaded photo';
+  //       S3UploadFileOptions options = S3UploadFileOptions(
+  //           accessLevel: StorageAccessLevel.guest, metadata: metadata);
+  //       UploadFileResult file_result = await Amplify.Storage.uploadFile(
+  //           key: key, local: local, options: options);
+  //       setState(() {
+  //         _uploadFileResult = file_result.key;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print('UploadFile Err: ' + e.toString());
+  //   }
+  // }
 
-  void _upload() async {
+  void getUrl() async {
     try {
-      print('In upload');
-      File local = await FilePicker.getFile(type: FileType.image);
-      print('2');
-      final key = 'ExampleKey';
-      Map<String, String> metadata = <String, String>{};
-      metadata['name'] = 'WE DID IT FAM!';
-      metadata['desc'] = 'A successfully uploaded photo';
-      S3UploadFileOptions options = S3UploadFileOptions(
-          accessLevel: StorageAccessLevel.guest, metadata: metadata);
-      UploadFileResult result = await Amplify.Storage.uploadFile(
-          key: key, local: local, options: options);
+      print('In getUrl');
+      String key = "ExampleKey";
+      S3GetUrlOptions options = S3GetUrlOptions(
+          accessLevel: StorageAccessLevel.guest, expires: 10000);
+      GetUrlResult result =
+          await Amplify.Storage.getUrl(key: key, options: options);
+
       setState(() {
-        _uploadFileResult = result.key;
+        _getUrlResult = result.url;
       });
     } catch (e) {
-      print('UploadFile Err: ' + e.toString());
+      print('GetUrl Err: ' + e.toString());
     }
   }
 
-  void getUrl() async {}
-
-  void _download() async {}
+  // void _download() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -109,15 +121,20 @@ class _MyAppState extends State<MyApp> {
             // ));
             // body: TableLayout(),
             // body: MyCustomForm(),
-            body: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  onPressed: _upload,
-                  child: const Text('Upload File'),
-                ),
-              ],
-            ))));
+            // body: Center(
+            //     child: Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     RaisedButton(
+            //       onPressed: _upload,
+            //       child: const Text('Upload File'),
+            //     ),
+            //     RaisedButton(
+            //       onPressed: getUrl,
+            //       child: const Text('Get URL of Uploaded File'),
+            //     ),
+            //   ],
+            // ))
+            body: CameraFlow()));
   }
 }
