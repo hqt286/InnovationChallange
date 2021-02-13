@@ -1,7 +1,11 @@
+
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:inspection_app/dto/photodto.dart';
 import 'package:inspection_app/imagecommentpage.dart';
-import 'dart:math';
+import 'package:inspection_app/main.dart';
 
 
 
@@ -21,76 +25,120 @@ class Gallery extends StatefulWidget {
 }
 
 class GalleryState extends State<Gallery>{
-
-
-
-  final List<NetworkImage> images = <NetworkImage>[
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-    NetworkImage("https://picsum.photos/id/${new Random().nextInt(100)}/120"),
-  ];
-
   @override
   Widget build(BuildContext context) {
+
+    String cutText(String text) {
+      if (text.length > 20) {
+        return text.substring(0, 100) + " ...";
+      }
+      return text;
+    }
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Photos",
-            style: TextStyle(color: Color(0xffb74093).withOpacity(0.8), fontSize: 35),),
-          backgroundColor: Colors.transparent,
-          bottomOpacity: 0.0,
-          elevation: 0.0,
-          iconTheme: IconThemeData(
-            color: Colors.blue,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: Container(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.symmetric( horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Ink (
+                      child: IconButton(
+                        icon: Icon(IconData(61563, fontFamily: "MaterialIcons"), size: 25.0,),
+                        color: Colors.black,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+
+                    Text("Photo"),
+
+                    Ink (
+                      child: IconButton(
+                        icon: Icon(IconData(0xe014, fontFamily: "MaterialIcons"), size: 25.0,),
+                        color: Colors.black,
+                        onPressed: () {},
+                      ),
+                    ),
+
+                  ],
+                ),
+
+              )
+
           ),
         ),
         body: ListView.builder(
           itemCount: widget.photos.length,
           itemBuilder: (itemCount, index) {
             return GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ImageCommentPage(widget._photos[index])));
-              },
-              child: Container(
+                onTap: () {
+                  setState(() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ImageCommentPage(widget.photos[index])));
+                  });
+                },
+                onDoubleTap: () {
+                  setState(() {
+                    widget.photos[index].importantFlag ? widget.photos[index].importantFlag = false :
+                    widget.photos[index].importantFlag = true;
+                  });
+                },
                 child: Card(
-                  child: ListTile(
-                    title: Row(
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: images[index],
-                              )
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              child: Text("Checking"),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
                   ),
-                ),
-              ),
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          Ink.image(
+                            colorFilter: widget._photos[index].importantFlag ? ColorFilter.mode(Colors.grey, BlendMode.hue) : null,
+                            image: widget._photos[index].image,
+                            height: 240,
+                            fit: BoxFit.cover,
+                          ),
+                          Positioned(
+                            bottom: 16,
+                            right: 16,
+                            left: 16,
+                            child: Text(
+                              "Photo Id: ${widget._photos[index].photoId}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(16).copyWith(bottom: 0),
+                        child: Text(
+                          cutText(widget._photos[index].comment),
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      ButtonBar(
+                        alignment: MainAxisAlignment.start,
+                        children: [
+                          TextButton(
+                            child: Text('Tap to edit or read more'),
+                            onPressed: () {},
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
             );
           },
         )
     );
 
   }
-
 }

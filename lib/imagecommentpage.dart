@@ -40,7 +40,7 @@ class ImageCommentPageState extends State<ImageCommentPage> {
           color: Colors.blue,
         ),
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -50,7 +50,7 @@ class ImageCommentPageState extends State<ImageCommentPage> {
                   height: 300,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage('https://picsum.photos/300'),
+                      image: widget._photoDTO.image,
                       fit: BoxFit.cover,
                     ),
                     border: Border.all(
@@ -74,22 +74,14 @@ class ImageCommentPageState extends State<ImageCommentPage> {
                     ),
                   ),
                   Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
                     child: Align(
                       child: InkWell(
                         child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 1,
-                                )
+                            child: Text(widget._photoDTO.comment,
+                              style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 12),
                             ),
-                            child: Container(
-                              width: 320,
-                              height: 100,
-                              child: Text("___ 1 2 3 4"),
-                            )
                         ),
                         onTap: commentButtonPressed,
                       ),

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class PhotoDTO {
 
   int _photoId;
-  Image _image;
+  NetworkImage _image;
   String _comment;
+  bool _importantFlag;
 
-  PhotoDTO(this._photoId, this._image, this._comment);
+
+  PhotoDTO(this._photoId, this._image, this._comment, this._importantFlag);
 
   String get comment => _comment;
 
@@ -14,9 +16,9 @@ class PhotoDTO {
     _comment = value;
   }
 
-  Image get image => _image;
+  NetworkImage get image => _image;
 
-  set image(Image value) {
+  set image(NetworkImage value) {
     _image = value;
   }
 
@@ -24,5 +26,11 @@ class PhotoDTO {
 
   set photoId(int value) {
     _photoId = value;
+  }
+
+  bool get importantFlag => _importantFlag;
+
+  set importantFlag(bool value) {
+    _importantFlag = value;
   }
 }

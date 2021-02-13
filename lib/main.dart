@@ -1,8 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:inspection_app/commentpage.dart';
+import 'package:inspection_app/dto/photodto.dart';
 import 'package:inspection_app/gallerypage.dart';
 import 'package:inspection_app/dto/curbappealdto.dart';
+import 'dart:math';
 
 void main() {
   runApp(MaterialApp(
@@ -16,6 +18,15 @@ class InspectionApp extends StatefulWidget{
   CurbAppealDTO _curbAppeal = new CurbAppealDTO();
   InspectionApp() {
     _curbAppeal = new CurbAppealDTO();
+    _curbAppeal.photos.add(new PhotoDTO(1, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), "If you're looking for random paragraphs, you've come to the right place. When a random word or a random sentence isn't quite enough, the next logical step is to find a random paragraph. We created the Random Paragraph Generator with you in mind. The process is quite simple. Choose the number of random paragraphs"
+        +" you'd like to see and click the button. Your chosen number of paragraphs will instantly appear."
+        + "While it may not be obvious to eve", false));
+    _curbAppeal.photos.add(new PhotoDTO(2, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), "Hello", false));
+    _curbAppeal.photos.add(new PhotoDTO(3, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), "Hello", false));
+    _curbAppeal.photos.add(new PhotoDTO(4, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), "Hello", false));
+    _curbAppeal.photos.add(new PhotoDTO(5, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), "Hello", false));
+    _curbAppeal.photos.add(new PhotoDTO(6, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), "Hello", false));
+    _curbAppeal.photos.add(new PhotoDTO(7, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), "Hello", false));
   }
 
   CurbAppealDTO get curbAppeal => _curbAppeal;
