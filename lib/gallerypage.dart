@@ -1,13 +1,13 @@
-
 import 'dart:ui';
-
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/rendering.dart';
 import 'package:inspection_app/dto/photodto.dart';
 import 'package:inspection_app/imagecommentpage.dart';
 import 'package:inspection_app/main.dart';
-
-
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Gallery extends StatefulWidget {
   List<PhotoDTO> _photos;
@@ -24,10 +24,9 @@ class Gallery extends StatefulWidget {
   createState() => new GalleryState();
 }
 
-class GalleryState extends State<Gallery>{
+class GalleryState extends State<Gallery> {
   @override
   Widget build(BuildContext context) {
-
     String cutText(String text) {
       if (text.length > 20) {
         return text.substring(0, 100) + " ...";
@@ -41,36 +40,39 @@ class GalleryState extends State<Gallery>{
           child: Container(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.symmetric( horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Ink (
+                    Ink(
                       child: IconButton(
-                        icon: Icon(IconData(61563, fontFamily: "MaterialIcons"), size: 25.0,),
+                        icon: Icon(
+                          IconData(61563, fontFamily: "MaterialIcons"),
+                          size: 25.0,
+                        ),
                         color: Colors.black,
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                       ),
                     ),
-
-                    Text("Photos",
+                    Text(
+                      "Photos",
                       style: TextStyle(fontSize: 20),
                     ),
-
-                    Ink (
+                    Ink(
                       child: IconButton(
-                        icon: Icon(IconData(0xe014, fontFamily: "MaterialIcons"), size: 25.0,),
+                        icon: Icon(
+                          IconData(0xe014, fontFamily: "MaterialIcons"),
+                          size: 25.0,
+                        ),
                         color: Colors.black,
                         onPressed: () {},
                       ),
                     ),
                   ],
                 ),
-              )
-
-          ),
+              )),
         ),
         body: ListView.builder(
           itemCount: widget.photos.length,
@@ -78,13 +80,18 @@ class GalleryState extends State<Gallery>{
             return GestureDetector(
                 onTap: () {
                   setState(() {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ImageCommentPage(widget.photos[index])));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ImageCommentPage(widget.photos[index])));
                   });
                 },
                 onDoubleTap: () {
                   setState(() {
-                    widget.photos[index].importantFlag ? widget.photos[index].importantFlag = false :
-                    widget.photos[index].importantFlag = true;
+                    widget.photos[index].importantFlag
+                        ? widget.photos[index].importantFlag = false
+                        : widget.photos[index].importantFlag = true;
                   });
                 },
                 child: Card(
@@ -97,7 +104,9 @@ class GalleryState extends State<Gallery>{
                       Stack(
                         children: [
                           Ink.image(
-                            colorFilter: widget._photos[index].importantFlag ? ColorFilter.mode(Colors.grey, BlendMode.hue) : null,
+                            colorFilter: widget._photos[index].importantFlag
+                                ? ColorFilter.mode(Colors.grey, BlendMode.hue)
+                                : null,
                             image: widget._photos[index].image,
                             height: 240,
                             fit: BoxFit.cover,
@@ -135,11 +144,8 @@ class GalleryState extends State<Gallery>{
                       )
                     ],
                   ),
-                )
-            );
+                ));
           },
-        )
-    );
-
+        ));
   }
 }
