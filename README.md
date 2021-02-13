@@ -1,8 +1,10 @@
 # inspection_app
-
 Inspection app for hackathon
 
 ## Getting Started
+
+# create a new folder called inspection_app
+# clone the repo in there
 
 This project is a starting point for a Flutter application.
 
