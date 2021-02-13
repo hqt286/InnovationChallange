@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:inspection_app/commentpage.dart';
 import 'package:inspection_app/dto/photodto.dart';
 import 'package:inspection_app/gallerypage.dart';
 import 'package:inspection_app/dto/curbappealdto.dart';
+import 'package:inspection_app/ratingwidget.dart';
 import 'dart:math';
 
 void main() {
@@ -68,84 +70,55 @@ class InspectionAppState extends State<InspectionApp> {
 
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text("Curb Appeal",
-            style: TextStyle(color: Color(0xffb74093).withOpacity(0.8), fontSize: 35),),
-            backgroundColor: Colors.transparent,
-            bottomOpacity: 0.0,
-            elevation: 0.0,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: Container(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Ink (
+                        child: IconButton(
+                          icon: Icon(Icons.menu, size: 25.0,),
+                          color: Colors.black,
+                          onPressed: () {
+                            // Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
 
+                      Text("Curb Appeal",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Ink (
+                        child: IconButton(
+                          icon: Icon(IconData(61707, fontFamily: "MaterialIcons"), size: 25.0,),
+                          color: Colors.black,
+                          onPressed: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+            ),
           ),
-          body: Container (
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
 
+          body: SingleChildScrollView (
+            child: Column(
+              children: [
                 Container(
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text("Comparison to Neighborhood; First Impression / Appearance",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
-                    textAlign: TextAlign.center,)
+                      padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 16.0),
+                      child: Text("Comparison to Neighborhood; First Impression / Appearance",
+                        style: TextStyle(fontFamily: 'RobotoMono', fontSize: 12, color: Colors.grey),
+                        textAlign: TextAlign.center,)
                   ),
                 ),
 
-                //******************************************** Rating Bar Section **************************************************************
-                Container(
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child:Text(
-                            "Your Rating: $widget",
-                            style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 15),
-                          ),
-                        ),
-
-                        Container(
-                          child: SliderTheme(
-                            data: SliderTheme.of(context).copyWith(
-                              activeTrackColor: Colors.red[700],
-                              inactiveTrackColor: Colors.red[100],
-                              trackShape: RoundedRectSliderTrackShape(),
-                              trackHeight: 4.0,
-                              thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                              thumbColor: Colors.redAccent,
-                              overlayColor: Colors.red.withAlpha(32),
-                              overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
-                              tickMarkShape: RoundSliderTickMarkShape(),
-                              activeTickMarkColor: Colors.red[700],
-                              inactiveTickMarkColor: Colors.red[100],
-                              valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-                              valueIndicatorColor: Colors.redAccent,
-                              valueIndicatorTextStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            child: Slider(
-                              min: 0.0,
-                              max: 5.0,
-                              divisions: 5,
-                              value: widget._curbAppeal.rating,
-                              activeColor: widget._curbAppeal.ratingColor,
-                              inactiveColor: Colors.lightBlue,
-                              label: "${widget._curbAppeal.rating}",
-                              onChanged: (newValue) {
-                                setState(() {
-                                  widget._curbAppeal.rating = newValue;
-                                  print(Text("${widget._curbAppeal.rating}"));
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    )
-                ),
-
-
+                //******************************************** Rating Section **************************************************************
+                CustomRatingWidget(widget._curbAppeal),
 
                 //******************************************** Trend Section **************************************************************
                 Container(
