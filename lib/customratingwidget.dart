@@ -31,14 +31,14 @@ class CustomRatingWidgetState extends State<CustomRatingWidget> {
               alignment: Alignment.center,
               child:Text(
                 "Your Rating: ${widget._curbAppealDTO.ratingLabel}",
-                style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 12),
+                style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 20),
               ),
             ),
             Padding(
                 padding: EdgeInsets.only(top: 20),
               child: Icon(widget._curbAppealDTO.ratingIcon,
                 color: widget._curbAppealDTO.ratingColor,
-                size: 75,
+                size: 100,
               ),
             ),
             Container(

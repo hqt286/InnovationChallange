@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:inspection_app/dto/photodto.dart';
+import 'package:inspection_app/dto/commentdto.dart';
+import 'package:inspection_app/dto/userdto.dart';
 import 'dart:ui';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CurbAppealDTO {
   double _rating;
   String _trend;
-  String _comment;
+  CommentDTO _comment;
   List<PhotoDTO> _photos;
   Color _ratingColor;
   IconData _ratingIcon;
   String _ratingLabel;
+  UserDTO _user;
 
-  CurbAppealDTO() {
+  CurbAppealDTO(UserDTO user) {
     this._rating = 4;
-    this._trend = "";
-    this._comment= "";
+    this._trend = "Unknown";
     this._photos = [];
-    this._ratingColor = Colors.white;
+    this._ratingColor = Colors.pinkAccent.withOpacity(0.5);
     this._ratingLabel = "Not Applicable";
+    this._ratingIcon = Icons.sentiment_satisfied;
+    this._user = user;
+    this._comment = CommentDTO(user);
   }
 
   Color get ratingColor => _ratingColor;
@@ -33,9 +37,9 @@ class CurbAppealDTO {
     _photos = value;
   }
 
-  String get comment => _comment;
+  CommentDTO get comment => _comment;
 
-  set comment(String value) {
+  set comment(CommentDTO value) {
     _comment = value;
   }
 
@@ -96,5 +100,11 @@ class CurbAppealDTO {
 
   set ratingIcon(IconData value) {
     _ratingIcon = value;
+  }
+
+  UserDTO get user => _user;
+
+  set user(UserDTO value) {
+    _user = value;
   }
 }

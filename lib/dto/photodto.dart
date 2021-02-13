@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:inspection_app/dto/commentdto.dart';
 
 class PhotoDTO {
 
   int _photoId;
   NetworkImage _image;
-  String _comment;
+  CommentDTO _comment;
   bool _importantFlag;
-
 
   PhotoDTO(this._photoId, this._image, this._comment, this._importantFlag);
 
-  String get comment => _comment;
+  CommentDTO get comment => _comment;
 
-  set comment(String value) {
+  set comment(CommentDTO value) {
     _comment = value;
   }
 

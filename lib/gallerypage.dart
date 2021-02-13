@@ -120,8 +120,8 @@ class GalleryState extends State<Gallery>{
                       Padding(
                         padding: EdgeInsets.all(16).copyWith(bottom: 0),
                         child: Text(
-                          cutText(widget._photos[index].comment),
-                          style: TextStyle(fontSize: 12),
+                          cutText(widget._photos[index].comment.content),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                       ButtonBar(

@@ -79,7 +79,7 @@ class ImageCommentPageState extends State<ImageCommentPage> {
                     child: Align(
                       child: InkWell(
                         child: Container(
-                            child: Text(widget._photoDTO.comment,
+                            child: Text(widget._photoDTO.comment.content,
                               style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 12),
                             ),
                         ),

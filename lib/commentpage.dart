@@ -1,13 +1,15 @@
 
 import 'package:flutter/material.dart';
+import 'package:inspection_app/dto/commentdto.dart';
 
 class CommentPage extends StatefulWidget {
-  String _comment;
+   CommentDTO _comment;
   CommentPage(this._comment);
 
-  String get comment => _comment;
 
-  set comment(String value) {
+   CommentDTO get comment => _comment;
+
+  set comment(CommentDTO value) {
     _comment = value;
   }
 
@@ -23,7 +25,7 @@ class CommentPageState extends State<CommentPage> {
       appBar: AppBar(
         title: Text("Comments"),
       ),
-      body: Text(widget._comment),
+      body: Text(widget._comment.content),
     );
   }
 }
