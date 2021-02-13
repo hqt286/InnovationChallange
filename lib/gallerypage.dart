@@ -34,6 +34,7 @@ class GalleryState extends State<Gallery>{
       }
       return text;
     }
+
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
@@ -54,7 +55,9 @@ class GalleryState extends State<Gallery>{
                       ),
                     ),
 
-                    Text("Photo"),
+                    Text("Photos",
+                      style: TextStyle(fontSize: 20),
+                    ),
 
                     Ink (
                       child: IconButton(
@@ -63,10 +66,8 @@ class GalleryState extends State<Gallery>{
                         onPressed: () {},
                       ),
                     ),
-
                   ],
                 ),
-
               )
 
           ),
