@@ -39,8 +39,9 @@ CurbAppealDTO createTestCurbData() {
   CommentDTO comment1 = new CommentDTO(user);
   comment1.content = "Dummy";
 
-  curbAppealDTO.photos.add(new PhotoDTO.networkImage(1, NetworkImage("https://picsum.photos/id/63/500"), comment));
-
+  PhotoDTO photoDTO = PhotoDTO.networkImage(1, NetworkImage("https://picsum.photos/id/63/500"), comment);
+  photoDTO.address = "Falls Church, 22042, United States";
+  curbAppealDTO.photos.add(photoDTO);
   return curbAppealDTO;
 }
 

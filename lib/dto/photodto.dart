@@ -11,6 +11,7 @@ class PhotoDTO {
   CommentDTO _comment;
   bool _importantFlag;
   bool _isNetworkImage;
+  String _address;
 
   PhotoDTO.fileImage(int photoId, File fileImage, CommentDTO commentDTO) {
     _photoId = photoId;
@@ -76,5 +77,11 @@ class PhotoDTO {
 
   set isNetworkImage(bool value) {
     _isNetworkImage = value;
+  }
+
+  String get address => _address;
+
+  set address(String value) {
+    _address = value;
   }
 }

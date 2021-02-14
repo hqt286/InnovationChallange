@@ -9,7 +9,7 @@ import 'package:inspection_app/dto/commentdto.dart';
 import 'package:inspection_app/dto/photodto.dart';
 import 'package:inspection_app/dto/userdto.dart';
 import 'package:inspection_app/imagecommentpage.dart';
-
+import 'package:geolocator/geolocator.dart';
 
 
 class Gallery extends StatefulWidget {
@@ -30,16 +30,56 @@ class Gallery extends StatefulWidget {
 }
 
 class GalleryState extends State<Gallery>{
+
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  Position _currentPosition;
+  String _currentAddress;
+
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
+      Placemark place = p[0];
+      setState(() {
+        _currentAddress =
+        "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _getCurrentLocation() {
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+      _getAddressFromLatLng();
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  @override
+  void initState() {
+    _getCurrentLocation();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
 
     Future<void> openCamera(BuildContext context) async{
       var picture = await ImagePicker.pickImage(source: ImageSource.camera);
       this.setState(() {
         if (picture != null) {
           widget._imageFile = picture;
-          widget._photos.add(PhotoDTO.fileImage(widget._photos.length, picture, CommentDTO(UserDTO("Hung Tran"))));
+          PhotoDTO photo = PhotoDTO.fileImage(widget._photos.length, picture, CommentDTO(UserDTO("Hung Tran")));
+          photo.address = _currentAddress;
+          print(_currentAddress);
+          widget._photos.add(photo);
         }
       });
     }
@@ -53,7 +93,7 @@ class GalleryState extends State<Gallery>{
 
 
     String cutText(String text) {
-      if (text.length > 20) {
+      if (text.length > 100) {
         return text.substring(0, 100) + " ...";
       }
       return text;
@@ -136,11 +176,11 @@ class GalleryState extends State<Gallery>{
                             right: 16,
                             left: 16,
                             child: Text(
-                              "Photo Id: ${widget._photos[index].photoId}",
+                              widget._photos[index].address,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
-                                fontSize: 24,
+                                fontSize: 20,
                               ),
                             ),
                           ),
