@@ -159,7 +159,7 @@ class InspectionAppState extends State<InspectionApp> {
                 //******************************************** Trend Section **************************************************************
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomCommentWidget("Comment: ", widget._curbAppeal.comment),
+                  child: CustomCommentWidget(widget._curbAppeal.comment),
                 ),
 
 

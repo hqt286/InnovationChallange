@@ -26,40 +26,59 @@ class CustomDropDownState extends State<CustomDropDown> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey, width: 1.0,
+    return Column (
+
+      children: [
+
+        Padding(
+          padding: EdgeInsets.only(bottom: 16),
+          child: Align(
+            alignment: Alignment.center,
+            child:Text(
+              "Trend",
+              style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 25),
+            ),
+          ),
+
         ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: DropdownButton(
-        hint: Text("Select Items: "),
-        dropdownColor: Colors.white,
-        icon: Icon(Icons.arrow_drop_down),
-        iconSize: 16,
-        isExpanded: true,
-        underline:SizedBox(),
-        style: TextStyle(
-            color: Colors.black,
-            fontSize: 16
+
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.grey, width: 1.0,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: DropdownButton(
+            hint: Text("Select Items: "),
+            dropdownColor: Colors.white,
+            icon: Icon(Icons.arrow_drop_down),
+            iconSize: 16,
+            isExpanded: true,
+            underline:SizedBox(),
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 16
+            ),
+            value: widget._selectValue,
+            onChanged: (newValue) {
+              setState(() {
+                widget._selectValue = newValue;
+              });
+            },
+            items: widget._selections.map(
+                    (valueItem){
+                  return DropdownMenuItem(
+                    value: valueItem,
+                    child: Text (valueItem),
+                  );
+                }
+            ).toList(),
+          ),
         ),
-        value: widget._selectValue,
-        onChanged: (newValue) {
-          setState(() {
-            widget._selectValue = newValue;
-          });
-        },
-        items: widget._selections.map(
-                (valueItem){
-              return DropdownMenuItem(
-                value: valueItem,
-                child: Text (valueItem),
-              );
-            }
-        ).toList(),
-      ),
+      ],
     );
+
   }
 }
