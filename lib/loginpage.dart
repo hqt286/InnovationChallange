@@ -31,17 +31,6 @@ class LoginPageState extends State<LoginPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.white,
-      //   child: Icon(Icons.done, color: Colors.black,),
-      //   onPressed: () {
-      //     _formKey.currentState.validate();
-      //     _formPwd.currentState.validate();
-      //   },
-      // ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [

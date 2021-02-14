@@ -165,7 +165,7 @@ class GalleryState extends State<Gallery>{
                       Stack(
                         children: [
                           Ink.image(
-                            colorFilter: widget._photos[index].importantFlag ? ColorFilter.mode(Colors.yellowAccent, BlendMode.colorBurn) : null,
+                            colorFilter: widget._photos[index].importantFlag ? ColorFilter.mode(Colors.red, BlendMode.color) : null,
                             image: widget._photos[index].isNetworkImage ? widget.photos[index].networkImage
                                 : FileImage(widget.photos[index].fileImage),
                             height: 240,
@@ -192,7 +192,7 @@ class GalleryState extends State<Gallery>{
                             alignment: Alignment.topLeft,
                             child: Text(
                               cutText(widget._photos[index].comment.content),
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(fontSize: 16, color: widget._photos[index].importantFlag ? Colors.red : Colors.black),
                             ),
                           )
 

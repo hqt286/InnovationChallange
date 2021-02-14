@@ -38,7 +38,7 @@ dependencies:
   geolocator: ^5.3.1
   mailer: ^3.3.0
   toast: ^0.1.5
-
+  amplify_storage_s3: ^0.0.2-dev.2
 
 
 dev_dependencies:
@@ -50,6 +50,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  sdk: flutter
+  amplify_flutter:
+    path: /{path to your local amplify-flutter}/amplify-flutter/packages/amplify_flutter
+  amplify_analytics_pinpoint:
+    path: /{path to your local amplify-flutter}/amplify-flutter/packages/amplify_analytics_pinpoint
+  amplify_auth_cognito:
+    path: /{path to your local amplify-flutter}/amplify-flutter/packages/amplify_auth_cognito
   assets:
     - assets/images/coffee.jpg
   fonts:

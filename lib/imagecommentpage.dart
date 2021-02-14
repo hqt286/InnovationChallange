@@ -98,7 +98,7 @@ class ImageCommentPageState extends State<ImageCommentPage> {
                     height: 300,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        colorFilter: widget._photoDTO.importantFlag ? ColorFilter.mode(Colors.yellowAccent, BlendMode.colorBurn) : null,
+                        colorFilter: widget._photoDTO.importantFlag ? ColorFilter.mode(Colors.red, BlendMode.color) : null,
                         image: widget._photoDTO.isNetworkImage ? widget._photoDTO.networkImage
                                 : FileImage(widget._photoDTO.fileImage),
                         fit: BoxFit.cover,

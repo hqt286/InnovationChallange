@@ -1,7 +1,5 @@
 
-import 'dart:io';
 import 'dart:ui';
-import 'dart:math';
 import 'package:inspection_app/dto/photodto.dart';
 import 'package:inspection_app/gallerypage.dart';
 import 'package:inspection_app/dto/curbappealdto.dart';
@@ -16,26 +14,39 @@ import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:inspection_app/inspectionguideline.dart';
 
 CurbAppealDTO createTestCurbData() {
 
   CurbAppealDTO curbAppealDTO;
   UserDTO user = UserDTO("Hung Tran");
   user.email = "hungtran@123.com";
-  user.photoId = NetworkImage("https://picsum.photos/id/237/200");
+  user.photoId = NetworkImage("https://www.irecsolarcareermap.org/assets/images-jobs/BuildingInspector.jpg");
 
   curbAppealDTO = new CurbAppealDTO(user);
-  String dummyText = "If you're looking for random paragraphs, you've come to the right place. When a random word or a random sentence isn't quite enough,"
-      +" the next logical step is to find a random paragraph." +
-      " We created the Random Paragraph Generator with you in mind. The process is quite simple. Choose the number of random paragraphs"
-      +" you'd like to see and click the button. Your chosen number of paragraphs will instantly appear."
-      + "While it may not be obvious to eve";
+  String dummyComment = """This property inspection report may include an inspection agreement (contract), addenda, and other
+information related to property conditions. If any item or comment is unclear, you should ask the inspector
+to clarify the findings. It is important that you carefully read ALL of this information.
+This inspection is subject to the rules (“Rules”) of the Texas Real Estate Commission (“TREC”), which
+can be found at www.trec.state.tx.us.
+The TREC Standards of Practice (Sections 535.227-535.231 of the Rules) are the minimum standards for
+inspections by TREC-licensed inspectors. An inspection addresses only those components and
+conditions that are present, visible, and accessible at the time of the inspection. While there may be other
+parts, components or systems present, only those items specifically noted as being inspected were
+inspected. The inspector is not required to move furnishings or stored items. The inspection report may
+address issues that are code-based or may refer to a particular code; however, this is NOT a code
+compliance inspection and does NOT verify compliance with manufacturer’s installation instructions. The
+inspection does NOT imply insurability or warrantability of the structure or its components. Although some
+safety issues may be addressed in this report, this inspection is NOT a safety/code inspection, and the
+inspector is NOT required to identify all potential hazards. """;
 
-  curbAppealDTO.comment.content = dummyText;
+  String dummyImageComment = """There is some flaking paint and deterioration to the door frame and trim on the exterior side of the door. Recommend repairs to prevent future deterioration.
+There is some missing and or damaged weather stripping on the door frame. """;
+  curbAppealDTO.comment.content = dummyComment;
   CommentDTO comment = new CommentDTO(user);
-  comment.content = dummyText;
+  comment.content = dummyImageComment;
 
-  PhotoDTO photoDTO = PhotoDTO.networkImage(1, NetworkImage("https://picsum.photos/id/63/500"), comment);
+  PhotoDTO photoDTO = PhotoDTO.networkImage(1, NetworkImage("https://cdngeneral.rentcafe.com/dmslivecafe/3/317695/Exterior%20View%20of%20Oxmoor%20Apartments.jpg?crop=(0,20,300,200)&cropxunits=300&cropyunits=200&quality=85&scale=both&"), comment);
   photoDTO.address = "Falls Church, 22042, United States";
   curbAppealDTO.photos.add(photoDTO);
   return curbAppealDTO;
@@ -62,7 +73,7 @@ class InspectionApp extends StatefulWidget{
 class InspectionAppState extends State<InspectionApp> {
 
 
-  sendMail() async {
+  Future<void> sendMail() async {
     String username = 'quochung181@gmail.com';
     String password = 'avmczfsoqcspulpe';
 
@@ -70,9 +81,12 @@ class InspectionAppState extends State<InspectionApp> {
     final message = Message()
       ..from = Address(username)
       ..recipients.add('hqt286@vt.edu')
-      ..subject = 'Mail using mailer package :: 😀 :: ${DateTime.now()}'
+      ..subject = 'Inspection Result :: 😀 :: ${DateTime.now()}'
       ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-      ..html = "<h1>Write the content here</h1>\n<p>Hey! its easy use html tags for alignments</p>";
+      ..html = "<h1>Summary Of Inspection Report</h1>\n"
+          + "<p>Overall Rating: ${widget._curbAppeal.ratingLabel}</p>\n"
+          + "<p>Trend: ${widget._curbAppeal.trend} </p>\n"
+          +"<p>Comment: ${widget._curbAppeal.comment.content}</p>";
 
     try {
       final sendReport = await send(message, smtpServer);
@@ -93,6 +107,7 @@ class InspectionAppState extends State<InspectionApp> {
           CustomDialogWidget("Opsss!", "You forgot to drop some comments", "Okay"));
     }
     else {
+      sendMail();
       widget._curbAppeal.passValidation = true;
       showDialog(context: context, builder:(BuildContext context) =>
           CustomDialogWidget("Awesome!", "Property summary email sent to Fannie Mae", "Okay"));
@@ -114,6 +129,15 @@ class InspectionAppState extends State<InspectionApp> {
 
     return MaterialApp(
       home: Scaffold(
+
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.white,
+            child: Icon(IconData(0xe109, fontFamily: "MaterialIcons"), color: Colors.redAccent,),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => InspectionGuideline()));
+            },
+          ),
+
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(50),
             child: Container(
@@ -125,7 +149,7 @@ class InspectionAppState extends State<InspectionApp> {
                     children: [
                       Ink (
                         child: IconButton(
-                          icon: Icon(Icons.menu, size: 25.0,),
+                          icon: Icon(Icons.menu, size: 30.0,),
                           color: Colors.black,
                           onPressed: () {
                             // Navigator.of(context).pop();
@@ -138,8 +162,8 @@ class InspectionAppState extends State<InspectionApp> {
                       ),
                       Ink (
                         child: IconButton(
-                          icon: Icon(IconData(61707, fontFamily: "MaterialIcons"), size: 25.0,),
-                          color: widget._curbAppeal.passValidation ? Colors.greenAccent.withOpacity(0.7) : Colors.black,
+                          icon: Icon(IconData(0xebf1, fontFamily: "MaterialIcons"), size: 30.0,),
+                          color: widget._curbAppeal.passValidation ? Colors.green : Colors.black,
                           onPressed: validatedButtonPressed,
                         ),
                       ),
