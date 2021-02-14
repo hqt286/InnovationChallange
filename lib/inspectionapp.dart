@@ -2,7 +2,6 @@
 import 'dart:io';
 import 'dart:ui';
 import 'dart:math';
-import 'package:inspection_app/commentpage.dart';
 import 'package:inspection_app/dto/photodto.dart';
 import 'package:inspection_app/gallerypage.dart';
 import 'package:inspection_app/dto/curbappealdto.dart';
@@ -14,12 +13,13 @@ import 'package:inspection_app/customdropdownwidget.dart';
 import 'package:inspection_app/customgallerywidget.dart';
 import 'package:inspection_app/customdialogwidget.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 CurbAppealDTO createTestCurbData() {
 
   CurbAppealDTO curbAppealDTO;
-
-
   UserDTO user = UserDTO("Hung Tran");
   user.email = "hungtran@123.com";
   user.photoId = NetworkImage("https://picsum.photos/id/237/200");
@@ -32,12 +32,8 @@ CurbAppealDTO createTestCurbData() {
       + "While it may not be obvious to eve";
 
   curbAppealDTO.comment.content = dummyText;
-
   CommentDTO comment = new CommentDTO(user);
   comment.content = dummyText;
-
-  CommentDTO comment1 = new CommentDTO(user);
-  comment1.content = "Dummy";
 
   PhotoDTO photoDTO = PhotoDTO.networkImage(1, NetworkImage("https://picsum.photos/id/63/500"), comment);
   photoDTO.address = "Falls Church, 22042, United States";
@@ -65,6 +61,31 @@ class InspectionApp extends StatefulWidget{
 
 class InspectionAppState extends State<InspectionApp> {
 
+
+  sendMail() async {
+    String username = 'quochung181@gmail.com';
+    String password = 'avmczfsoqcspulpe';
+
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username)
+      ..recipients.add('hqt286@vt.edu')
+      ..subject = 'Mail using mailer package :: 😀 :: ${DateTime.now()}'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html = "<h1>Write the content here</h1>\n<p>Hey! its easy use html tags for alignments</p>";
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+      Toast.show("You have clicked the Button! and email sent", context, duration: 3, gravity:  Toast.CENTER);
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
+  }
+
   void validatedButtonPressed() {
     if (widget._curbAppeal.comment.content.isEmpty) {
       widget._curbAppeal.passValidation = false;
@@ -73,7 +94,10 @@ class InspectionAppState extends State<InspectionApp> {
     }
     else {
       widget._curbAppeal.passValidation = true;
+      showDialog(context: context, builder:(BuildContext context) =>
+          CustomDialogWidget("Awesome!", "Property summary email sent to Fannie Mae", "Okay"));
     }
+
     setState(() {
 
     });
