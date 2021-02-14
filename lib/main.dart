@@ -56,9 +56,11 @@ CurbAppealDTO createTestCurbData() {
 class InspectionApp extends StatefulWidget{
 
   CurbAppealDTO _curbAppeal;
+
   InspectionApp() {
     _curbAppeal = createTestCurbData();
   }
+
   CurbAppealDTO get curbAppeal => _curbAppeal;
 
   set curbAppeal(CurbAppealDTO value) {
@@ -78,23 +80,15 @@ class InspectionAppState extends State<InspectionApp> {
     });
   }
 
-  void galleryButtonPressed() {
+  void galleryButtonPressed() async{
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => Gallery(widget._curbAppeal.photos)));
     setState(() {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Gallery(widget._curbAppeal.photos)));
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
-    IconButton commentBox = IconButton(
-      iconSize: 100,
-      icon: Icon(
-          Icons.add_box_rounded,
-          color: Colors.grey),
-      onPressed: commentButtonPressed,
-    );
-
 
     return MaterialApp(
       home: Scaffold(
@@ -168,11 +162,20 @@ class InspectionAppState extends State<InspectionApp> {
 
                 //******************************************** Comment Section **************************************************************
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomCommentWidget(widget._curbAppeal.comment),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: InkWell(
+                      child: CustomCommentWidget(widget._curbAppeal.comment),
+                      onTap: (){
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                      },
+                    )
                 ),
 
                 SizedBox(
+
                   height: 100,
                 ),
 

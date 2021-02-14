@@ -50,20 +50,23 @@ class GalleryState extends State<Gallery>{
                         icon: Icon(IconData(61563, fontFamily: "MaterialIcons"), size: 25.0,),
                         color: Colors.black,
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.pop(context);
                         },
                       ),
                     ),
 
                     Text("Photos",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 25),
                     ),
 
                     Ink (
                       child: IconButton(
+                        //Camera button
                         icon: Icon(IconData(0xe014, fontFamily: "MaterialIcons"), size: 25.0,),
                         color: Colors.black,
-                        onPressed: () {},
+                        onPressed: () {
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+                        },
                       ),
                     ),
                   ],
@@ -76,10 +79,11 @@ class GalleryState extends State<Gallery>{
           itemCount: widget.photos.length,
           itemBuilder: (itemCount, index) {
             return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ImageCommentPage(widget.photos[index])));
-                  });
+                onTap: () async{
+                    await Navigator.push(context, MaterialPageRoute(builder: (context) => ImageCommentPage(widget.photos[index])));
+                    setState(() {
+
+                    });
                 },
                 onDoubleTap: () {
                   setState(() {
@@ -118,11 +122,15 @@ class GalleryState extends State<Gallery>{
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.all(16).copyWith(bottom: 0),
-                        child: Text(
-                          cutText(widget._photos[index].comment.content),
-                          style: TextStyle(fontSize: 16),
-                        ),
+                          padding: EdgeInsets.all(16).copyWith(bottom: 0),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child:                       Text(
+                              cutText(widget._photos[index].comment.content),
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          )
+
                       ),
                       ButtonBar(
                         alignment: MainAxisAlignment.start,

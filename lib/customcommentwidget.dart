@@ -19,10 +19,19 @@ class CustomCommentWidget extends StatefulWidget {
 
 class CustomCommentWidgetState extends State <CustomCommentWidget> {
 
+  TextEditingController _textEditingController;
+  @override
+  void initState() {
+    _textEditingController = TextEditingController(text: widget._comment.content);
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-
-
 
     return Column(
       children: [
@@ -107,16 +116,23 @@ class CustomCommentWidgetState extends State <CustomCommentWidget> {
                   padding: EdgeInsets.all(10),
                   child: Align(
                     alignment: Alignment.center,
-                    child: InkWell(
-                      child: Container(
-                        child: Text(widget._comment.content,
-                          style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 16),
-                        ),
+                    child:
+                    TextField(
+                      maxLines: null,
+                      controller: _textEditingController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Enter Text",
                       ),
+
+                      onChanged: (value){
+                        setState(() {
+                          widget._comment.content = value;
+                        });
+                      },
                     ),
                   ),
                 ),
-
               ),
 
 

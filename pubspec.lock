@@ -109,6 +109,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.3"
+  rich_code_editor:
+    dependency: "direct main"
+    description:
+      name: rich_code_editor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -142,6 +149,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.3"
+  syntax_highlighter:
+    dependency: "direct main"
+    description:
+      name: syntax_highlighter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   term_glyph:
     dependency: transitive
     description:
