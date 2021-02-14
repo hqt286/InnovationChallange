@@ -35,11 +35,10 @@ class CustomDropDownState extends State<CustomDropDown> {
           child: Align(
             alignment: Alignment.center,
             child:Text(
-              "Trend",
-              style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 25),
+              "Select One Trend",
+              style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 20),
             ),
           ),
-
         ),
 
         Container(
@@ -79,6 +78,5 @@ class CustomDropDownState extends State<CustomDropDown> {
         ),
       ],
     );
-
   }
 }

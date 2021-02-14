@@ -9,6 +9,7 @@ import 'package:inspection_app/customcommentwidget.dart';
 import 'package:inspection_app/dto/userdto.dart';
 import 'package:inspection_app/dto/commentdto.dart';
 import 'package:inspection_app/customdropdownwidget.dart';
+import 'package:inspection_app/customgallerywidget.dart';
 import 'dart:math';
 
 void main() {
@@ -135,7 +136,6 @@ class InspectionAppState extends State<InspectionApp> {
           body: SingleChildScrollView (
             child: Column(
               children: [
-
                 Container(
                   child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 16.0),
@@ -146,8 +146,15 @@ class InspectionAppState extends State<InspectionApp> {
                 ),
 
 
+                SizedBox(
+                  height: 100,
+                ),
+
                 //******************************************** Rating Section **************************************************************
                 CustomRatingWidget(widget._curbAppeal),
+                SizedBox(
+                  height: 100,
+                ),
 
                 //******************************************** Trend Section **************************************************************
 
@@ -155,66 +162,28 @@ class InspectionAppState extends State<InspectionApp> {
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                   child: CustomDropDown(widget._curbAppeal.trend),
                 ),
+                SizedBox(
+                  height: 100,
+                ),
 
-                //******************************************** Trend Section **************************************************************
+                //******************************************** Comment Section **************************************************************
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: CustomCommentWidget(widget._curbAppeal.comment),
                 ),
 
-
-                //******************************************** Gallery Section **************************************************************
-
-                Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 20),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Photos",
-                              style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 15),
-                            ),
-                          ),
-                        ),
-
-
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.blue,
-                                ),
-                                onTap: galleryButtonPressed,
-                              ),
-
-                              InkWell(
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.blue,
-                                ),
-                                onTap: galleryButtonPressed,
-                              ),
-                              InkWell(
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.blue,
-                                ),
-                                onTap: galleryButtonPressed,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
+                SizedBox(
+                  height: 100,
                 ),
 
+                //******************************************** Gallery Section **************************************************************
+                InkWell(
+                  onTap: galleryButtonPressed,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child:  CustomGalleryWidget(widget._curbAppeal.photos),
+                  ),
+                )
 
               ],
             ),

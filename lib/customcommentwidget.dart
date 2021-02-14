@@ -32,8 +32,8 @@ class CustomCommentWidgetState extends State <CustomCommentWidget> {
           child: Align(
             alignment: Alignment.center,
             child:Text(
-              "Comment",
-              style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 25),
+              "Tell us what you think...",
+              style: TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 20),
             ),
           ),
         ),
