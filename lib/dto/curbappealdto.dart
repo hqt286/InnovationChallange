@@ -13,6 +13,7 @@ class CurbAppealDTO {
   IconData _ratingIcon;
   String _ratingLabel;
   UserDTO _user;
+  bool _passValidation;
 
   CurbAppealDTO(UserDTO user) {
     this._rating = 4;
@@ -23,6 +24,7 @@ class CurbAppealDTO {
     this._ratingIcon = Icons.sentiment_satisfied;
     this._user = user;
     this._comment = CommentDTO(user);
+    this._passValidation = false;
   }
 
   Color get ratingColor => _ratingColor;
@@ -106,5 +108,11 @@ class CurbAppealDTO {
 
   set user(UserDTO value) {
     _user = value;
+  }
+
+  bool get passValidation => _passValidation;
+
+  set passValidation(bool value) {
+    _passValidation = value;
   }
 }

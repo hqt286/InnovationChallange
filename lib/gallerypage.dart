@@ -101,7 +101,7 @@ class GalleryState extends State<Gallery>{
                       Stack(
                         children: [
                           Ink.image(
-                            colorFilter: widget._photos[index].importantFlag ? ColorFilter.mode(Colors.grey, BlendMode.hue) : null,
+                            colorFilter: widget._photos[index].importantFlag ? ColorFilter.mode(Colors.yellowAccent, BlendMode.colorBurn) : null,
                             image: widget._photos[index].image,
                             height: 240,
                             fit: BoxFit.cover,
@@ -125,7 +125,7 @@ class GalleryState extends State<Gallery>{
                           padding: EdgeInsets.all(16).copyWith(bottom: 0),
                           child: Align(
                             alignment: Alignment.topLeft,
-                            child:                       Text(
+                            child: Text(
                               cutText(widget._photos[index].comment.content),
                               style: TextStyle(fontSize: 16),
                             ),

@@ -33,6 +33,8 @@ dependencies:
   font_awesome_flutter: ^8.11.0
   rich_code_editor: ^1.0.5
   syntax_highlighter: ^0.1.1
+  auto_size_text: ^2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

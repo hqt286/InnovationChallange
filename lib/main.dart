@@ -10,6 +10,7 @@ import 'package:inspection_app/dto/userdto.dart';
 import 'package:inspection_app/dto/commentdto.dart';
 import 'package:inspection_app/customdropdownwidget.dart';
 import 'package:inspection_app/customgallerywidget.dart';
+import 'package:inspection_app/customdialogwidget.dart';
 import 'dart:math';
 
 void main() {
@@ -73,17 +74,23 @@ class InspectionApp extends StatefulWidget{
 
 class InspectionAppState extends State<InspectionApp> {
 
-
-  void commentButtonPressed() {
+  void validatedButtonPressed() {
+    if (widget._curbAppeal.comment.content.isEmpty) {
+      widget._curbAppeal.passValidation = false;
+      showDialog(context: context, builder:(BuildContext context) =>
+          CustomDialogWidget("Opsss!", "You forgot to drop some comments", "Okay"));
+    }
+    else {
+      widget._curbAppeal.passValidation = true;
+    }
     setState(() {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage(widget._curbAppeal.comment)));
+
     });
   }
 
   void galleryButtonPressed() async{
     await Navigator.push(context, MaterialPageRoute(builder: (context) => Gallery(widget._curbAppeal.photos)));
     setState(() {
-
     });
   }
 
@@ -117,8 +124,8 @@ class InspectionAppState extends State<InspectionApp> {
                       Ink (
                         child: IconButton(
                           icon: Icon(IconData(61707, fontFamily: "MaterialIcons"), size: 25.0,),
-                          color: Colors.black,
-                          onPressed: () {},
+                          color: widget._curbAppeal.passValidation ? Colors.greenAccent.withOpacity(0.7) : Colors.black,
+                          onPressed: validatedButtonPressed,
                         ),
                       ),
                     ],

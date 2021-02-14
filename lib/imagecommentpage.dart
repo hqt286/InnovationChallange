@@ -22,12 +22,6 @@ class ImageCommentPageState extends State<ImageCommentPage> {
 
   TextEditingController _textEditingController;
 
-  void commentButtonPressed() {
-    setState(() {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage(widget.photoDTO.comment)));
-    });
-  }
-
   @override
   void initState() {
     _textEditingController = TextEditingController(text: widget._photoDTO.comment.content);
@@ -67,7 +61,7 @@ class ImageCommentPageState extends State<ImageCommentPage> {
 
                   Ink (
                     child: IconButton(
-                      //Camera button
+                      //edit button
                       icon: Icon(IconData(0xe117, fontFamily: "MaterialIcons"), size: 25.0,),
                       color: Colors.black,
                       onPressed: () {
@@ -82,23 +76,36 @@ class ImageCommentPageState extends State<ImageCommentPage> {
         ),
       ),
 
+
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-                child: Container(
-                  width: 300,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: widget._photoDTO.image,
-                      fit: BoxFit.cover,
+
+                child: InkWell(
+
+                  onDoubleTap: () {
+                    setState(() {
+                      widget._photoDTO.importantFlag ? widget._photoDTO.importantFlag = false :
+                      widget._photoDTO.importantFlag = true;
+                    });
+                  },
+
+                  child: Container(
+                    width: 300,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        colorFilter: widget._photoDTO.importantFlag ? ColorFilter.mode(Colors.yellowAccent, BlendMode.colorBurn) : null,
+                        image: widget._photoDTO.image,
+                        fit: BoxFit.cover,
+                      ),
+                      border: Border.all(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    border: Border.all(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(12),
                   ),
                 )
             ),
