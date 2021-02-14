@@ -1,11 +1,14 @@
 
+import 'dart:io';
 import 'dart:ui';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:inspection_app/dto/commentdto.dart';
 import 'package:inspection_app/dto/photodto.dart';
+import 'package:inspection_app/dto/userdto.dart';
 import 'package:inspection_app/imagecommentpage.dart';
-import 'package:inspection_app/main.dart';
 
 
 
@@ -15,6 +18,8 @@ class Gallery extends StatefulWidget {
   Gallery(this._photos);
 
   List<PhotoDTO> get photos => _photos;
+
+  File _imageFile;
 
   set photos(List<PhotoDTO> value) {
     _photos = value;
@@ -27,6 +32,25 @@ class Gallery extends StatefulWidget {
 class GalleryState extends State<Gallery>{
   @override
   Widget build(BuildContext context) {
+
+
+    Future<void> openCamera(BuildContext context) async{
+      var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+      this.setState(() {
+        if (picture != null) {
+          widget._imageFile = picture;
+          widget._photos.add(PhotoDTO.fileImage(widget._photos.length, picture, CommentDTO(UserDTO("Hung Tran"))));
+        }
+      });
+    }
+
+    Future<void> openLibrary(BuildContext context) async{
+      var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+      this.setState(() {
+        widget._imageFile = picture;
+      });
+    }
+
 
     String cutText(String text) {
       if (text.length > 20) {
@@ -64,8 +88,8 @@ class GalleryState extends State<Gallery>{
                         //Camera button
                         icon: Icon(IconData(0xe014, fontFamily: "MaterialIcons"), size: 25.0,),
                         color: Colors.black,
-                        onPressed: () {
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+                        onPressed: (){
+                          openCamera(context);
                         },
                       ),
                     ),
@@ -80,10 +104,10 @@ class GalleryState extends State<Gallery>{
           itemBuilder: (itemCount, index) {
             return GestureDetector(
                 onTap: () async{
-                    await Navigator.push(context, MaterialPageRoute(builder: (context) => ImageCommentPage(widget.photos[index])));
-                    setState(() {
+                  await Navigator.push(context, MaterialPageRoute(builder: (context) => ImageCommentPage(widget.photos[index])));
+                  setState(() {
 
-                    });
+                  });
                 },
                 onDoubleTap: () {
                   setState(() {
@@ -102,7 +126,8 @@ class GalleryState extends State<Gallery>{
                         children: [
                           Ink.image(
                             colorFilter: widget._photos[index].importantFlag ? ColorFilter.mode(Colors.yellowAccent, BlendMode.colorBurn) : null,
-                            image: widget._photos[index].image,
+                            image: widget._photos[index].isNetworkImage ? widget.photos[index].networkImage
+                                : FileImage(widget.photos[index].fileImage),
                             height: 240,
                             fit: BoxFit.cover,
                           ),

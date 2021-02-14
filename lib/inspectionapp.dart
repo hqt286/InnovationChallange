@@ -1,4 +1,5 @@
 
+import 'dart:io';
 import 'dart:ui';
 import 'dart:math';
 import 'package:inspection_app/commentpage.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 CurbAppealDTO createTestCurbData() {
 
   CurbAppealDTO curbAppealDTO;
+
 
   UserDTO user = UserDTO("Hung Tran");
   user.email = "hungtran@123.com";
@@ -37,13 +39,7 @@ CurbAppealDTO createTestCurbData() {
   CommentDTO comment1 = new CommentDTO(user);
   comment1.content = "Dummy";
 
-  curbAppealDTO.photos.add(new PhotoDTO(1, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), comment, false));
-  curbAppealDTO.photos.add(new PhotoDTO(2, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), comment1, false));
-  curbAppealDTO.photos.add(new PhotoDTO(3, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), comment1, false));
-  curbAppealDTO.photos.add(new PhotoDTO(4, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), comment1, false));
-  curbAppealDTO.photos.add(new PhotoDTO(5, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), comment1, false));
-  curbAppealDTO.photos.add(new PhotoDTO(6, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), comment1, false));
-  curbAppealDTO.photos.add(new PhotoDTO(7, NetworkImage("https://picsum.photos/id/${Random().nextInt(100)}/500"), comment1, false));
+  curbAppealDTO.photos.add(new PhotoDTO.networkImage(1, NetworkImage("https://picsum.photos/id/63/500"), comment));
 
   return curbAppealDTO;
 }

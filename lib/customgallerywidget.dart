@@ -33,7 +33,9 @@ class CustomGalleryWidgetState extends State<CustomGalleryWidget> {
             Stack(
               children: [
                 Ink.image(
-                  image: widget._photos.length == 0 ? NetworkImage("https://picsum.photos/id/237/500") : widget._photos[0].image,
+                  image: widget._photos.length == 0 ? NetworkImage("https://picsum.photos/id/237/500")
+                      : widget._photos[0].isNetworkImage ? widget._photos[0].networkImage
+                      : FileImage(widget._photos[0].fileImage),
                   height: 200,
                   fit: BoxFit.cover,
                 ),

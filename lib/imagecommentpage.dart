@@ -49,7 +49,8 @@ class ImageCommentPageState extends State<ImageCommentPage> {
                     child: IconButton(
                       icon: Icon(IconData(61563, fontFamily: "MaterialIcons"), size: 25.0,),
                       color: Colors.black,
-                      onPressed: () {
+                      onPressed: () async {
+                        await _textEditingController.text;
                         Navigator.pop(context, 'Re-render');
                       },
                     ),
@@ -98,7 +99,8 @@ class ImageCommentPageState extends State<ImageCommentPage> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         colorFilter: widget._photoDTO.importantFlag ? ColorFilter.mode(Colors.yellowAccent, BlendMode.colorBurn) : null,
-                        image: widget._photoDTO.image,
+                        image: widget._photoDTO.isNetworkImage ? widget._photoDTO.networkImage
+                                : FileImage(widget._photoDTO.fileImage),
                         fit: BoxFit.cover,
                       ),
                       border: Border.all(
@@ -138,7 +140,8 @@ class ImageCommentPageState extends State<ImageCommentPage> {
                             hintText: "Enter Text",
                           ),
 
-                          onChanged: (value){
+                          onChanged: (value) async{
+                            await widget._photoDTO.comment.content;
                             setState(() {
                               widget._photoDTO.comment.content = value;
                             });
